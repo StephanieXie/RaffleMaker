@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
   res.send('Raffle Maker home page');
 });
 
-// called whenever Twilio receives a message
+// called whenever Twilio receives a message (participant => Twilio)
 router.post('/twilio-callback', function(req, res){
   var incomingMsg = req.body.Body; // text
   var incomingNum = req.body.From; // participant phone number
@@ -45,7 +45,7 @@ router.post('/twilio-callback', function(req, res){
   //console.log(smsModel);
 });
 
-// called whenever Twilio sends a message
+// called whenever Twilio sends a message (Twilio => participant)
 router.post('/sendText', function(req, res, next) {
   var accountSid = process.env.TWILIO_ACCOUNT_SID; 
   var authToken = process.env.TWILIO_AUTH_TOKEN; 
@@ -75,6 +75,17 @@ router.post('/sendText', function(req, res, next) {
     .catch(function(err) {
       res.status(500).send(err.message);
     });
+});
+
+// route for generating winner
+router.post('/generateWinner', function(req, res, next) {
+  SmsModel.find().distinct('from', function(err, phoneNumbers) {
+      // 'phoneNumbers' is an array of all (unique) participant phone numbers stored in the database
+      
+      var randomNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)];
+      res.send(randomNumber);
+      //return randomNumber;
+  });
 });
 
 module.exports = router;
