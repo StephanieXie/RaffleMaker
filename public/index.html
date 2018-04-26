@@ -1,21 +1,30 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    p {
+      text-align: center;
+      font-size: 60px;
+      margin-top:0px;
+    }
+
     * {box-sizing: border-box;}
 
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      /* background-color: #FFE733; /* GOLD */
+      background-color: #FAD759; /* GOLD */
     }
 
     .button {
-      background-color: #FF0000; /* RED */
+      background-color: #09CBC8; /* RED */
       border: none;
-      color: white;
-      padding: 32px 32px;
+      color: black;
+      padding-top: 120px;
+      padding-right: 30px;
+      padding-bottom: 120px;
+      padding-left: 30px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
@@ -24,7 +33,48 @@
     }
   </style>
 </head>
+
 <body>
+<p id="demo"></p>
+  <script>
+    function setTimer(){
+      // Set the date we're counting down to
+      var timeInSeconds = 7;
+      var currentTime = Date.parse(new Date());
+      var countDownDate = new Date(currentTime + timeInSeconds*1000);
+
+      // Update the count down every 1 second
+      var x = setInterval(function() {
+
+          // Get todays date and time
+          var now = new Date().getTime();
+          
+          // Find the distance between now an the count down date
+          var distance = countDownDate - now;
+          
+          // Time calculations for days, hours, minutes and seconds
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+          // Output the result in an element with id="demo"
+          document.getElementById("demo").innerHTML = "Countdown: " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+          
+          // If the count down is over, write some text 
+          if (distance < 0) {
+              clearInterval(x);
+              document.getElementById("demo").innerHTML = "Sending...";
+              congratsWinner();
+          }
+      }, 1000);
+    }
+
+    function congratsWinner(){
+      setTimeout(function(){window.location.href='congrats.html'},2000);
+    }
+  </script>
+
   <!-- Logo -->
   <h1 style = "text-align:center;">
   <div id="Title" style="margin-bottom:20px;">
@@ -34,9 +84,7 @@
   <!-- method='post' action='/generateWinner'-->
 
   <!-- Generate Winner -->
-  <a href="congrats.html">
-    <button class="button" type="submit" id='deathisnear'>Generate Winner</button>
-</a>
+  <button onclick="setTimeout(setTimer, 1000)" class="button" type="submit" id='deathisnear'>Generate Winner</button>
 </body>
 
     <!-- CUSTOM JS -->
