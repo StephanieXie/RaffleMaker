@@ -6,12 +6,12 @@ var twilio = require('twilio');
 var SmsModel = require('../models/smsModel'); // db model
 var twilioClient = require('../twilioClient');
 
-// Default home route
+// GET default home route
 router.get('/', function(req, res) {
   res.send('Raffle Maker home page');
 });
 
-// called whenever Twilio receives a message (participant => Twilio)
+// POST to /twilio-callback whenever our twilio app receives a message
 router.post('/twilio-callback', function(req, res){
   var incomingMsg = req.body.Body; // text
   var incomingNum = req.body.From; // participant phone number
@@ -43,14 +43,14 @@ router.post('/twilio-callback', function(req, res){
       res.send(twilioResp.toString());     
     }
   });
-  //console.log(smsModel);
 });
 
-// called whenever Twilio sends a message (Twilio => participant)
+// POST to /sendText whenever our twilio app sends a message
 router.post('/sendText', function(req, res, next) {
   var participantPhoneNumber = '+1'+req.body.phoneNumber;
-  var message = "i want dominos";
+  var message = "i want dominos"; // hard-coded for now
 
+  // if a participant's phone number appears multiple times in db, find the most recent entry
   SmsModel.findOne({from: participantPhoneNumber}, {}, {sort: {'_id': -1}})
     .then(function(participant) {
       twilioClient.sendSms(participantPhoneNumber, message);
@@ -63,7 +63,7 @@ router.post('/sendText', function(req, res, next) {
     });
 });
 
-// route for generating winner
+// POST to congratulations page
 router.post('/generateWinner', function(req, res, next) {
   res.render('../public/congrats.html');
 

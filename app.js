@@ -6,8 +6,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var env = require('node-env-file');
 
+// configure application routes
 var index = require('./routes/index');
 
+// create Express web app
 var app = express();
 
 // if in development mode, load .env variables
@@ -18,8 +20,7 @@ if (app.get("env") === "development") {
 // connect to database
 app.db = mongoose.connect(process.env.MONGODB_URI);
 
-// view engine setup - this app uses Hogan-Express
-// https://github.com/vol4ok/hogan-express
+// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.set('layout','layout');
@@ -29,6 +30,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// serve static assets
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
@@ -64,4 +67,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// export Express app
 module.exports = app;

@@ -1,3 +1,6 @@
+# BAD PRACTICE - PUSHING TO GIT EXPOSES SENSITIVE INFO. 
+# NEED TO FIND A BETTER WAY TO DO THIS.
+
 # Heroku credentials
 Email: sxie@smith.edu
 Password: crackerjack264!
