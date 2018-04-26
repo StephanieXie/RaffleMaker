@@ -1,0 +1,15 @@
+# Heroku credentials
+Email: sxie@smith.edu
+Password: crackerjack264!
+
+# Twilio login
+Email: sxie@smith.edu
+Password: whydoesthishavetobesolong
+
+# Twilio configuration
+TWILIO_ACCOUNT_SID='AC158b93797664b1a7e3654fc43563df13'
+TWILIO_AUTH_TOKEN='4f4b0e614a3bad8f5c272f1804165628'
+TWILIO_NUMBER='+16193040737'
+
+# ngrok authtoken
+4ic9jDmVfKuHFGwrmoRiB_FuUcQ1LkzZhjgjL1WypB
