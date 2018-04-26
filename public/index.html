@@ -11,7 +11,7 @@
       /* background-color: #FFE733; /* GOLD */
     }
 
-    .button {
+    .winner input.button {
       background-color: #FF0000; /* RED */
       border: none;
       color: white;
@@ -22,23 +22,50 @@
       font-size: 30px;
       border-radius: 50%;
     }
+
+    .sms input[type=text] {
+      border-radius: 25px;
+      padding: 6px;
+      margin-top: 8px;
+      font-size: 17px;
+      outline-width: 0;
+    }
+
+    .sms button {
+      padding: 6px;
+      margin-top: 8px;
+      margin-right: 16px;
+      background: #ddd;
+      font-size: 17px;
+      border: none;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
   <!-- Logo -->
   <h1 style = "text-align:center;">
   <div id="Title" style="margin-bottom:20px;">
-    <img src="raffle.png" id="logo" style="width:650px;height:100px;" class="center"/>
+    <img src="img/raffle.png" id="logo" style="width:650px;height:100px;" class="center"/>
   </div>
 
-  <!-- method='post' action='/generateWinner'-->
-
   <!-- Generate Winner -->
-  <a href="congrats.html">
-    <button class="button" type="submit" id='deathisnear'>Generate Winner</button>
-</a>
+  <div class="winner">
+    <form method='post' action='/generateWinner'>
+      <input type="submit" class="button" value="Generate Winner">
+    </form>
+  </div>
 </body>
 
-    <!-- CUSTOM JS -->
+  <!-- (DEBUGGING) Twilio SMS -->
+  <div class="sms" style="margin-top:50px;">
+    <form method="post" action="/sendText">
+      <input type="text" placeholder="my phone number" name="phoneNumber" id="phone_number">
+      <button type="submit" id="deathisnear">Text Me</button>
+    </form>
+  </div>
+
+<!-- CUSTOM JS -->
     
 </html>

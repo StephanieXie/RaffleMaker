@@ -10,9 +10,11 @@ Follow the instructions [here](https://support.twilio.com/hc/en-us/articles/2231
 
 1. In your browser, go to `raffle-maker.herokuapp.com`.
 
-2. Enter your number in the search bar and click 'Submit'. You should receive the following text:  **"Sent from your Twilio trial account - i want dominos"**
+2. Click the 'Generate Winner' button. You should be redirected to the 'Congratulations' page, and the app should automatically text the winner "Congratulations!"
 
-3. Text the Twilio number back. If the text goes through, you should get a response:  **"Sent from your Twilio trial account - Successfully saved status! --> your message"**
+3. Enter your number in the search bar and click 'Text Me'. You should receive the following text:  **"Sent from your Twilio trial account - i want dominos"**
+
+4. Text the Twilio number back. If the text goes through, you should get a response:  **"Sent from your Twilio trial account - Successfully saved status! --> your message"**
 
 ---
 
