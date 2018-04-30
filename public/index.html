@@ -1,26 +1,37 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    p {
+      text-align: center;
+      font-size: 60px;
+      margin-top:0px;
+    }
+
     * {box-sizing: border-box;}
 
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      /* background-color: #FFE733; /* GOLD */
+      background-color: #FAD759; /* GOLD */
     }
 
-    .winner input.button {
-      background-color: #FF0000; /* RED */
+    .congrats input.button {
+      background-color: #09CBC8; /* CYAN */
       border: none;
-      color: white;
-      padding: 32px 32px;
+      color: black;
+      padding-top: 120px;
+      padding-right: 30px;
+      padding-bottom: 120px;
+      padding-left: 30px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 30px;
       border-radius: 50%;
+      outline-width: 0;
+      cursor: pointer;
     }
 
     .sms input[type=text] {
@@ -40,10 +51,58 @@
       border: none;
       cursor: pointer;
     }
-
   </style>
 </head>
 <body>
+  <p id="congrats_page"></p>
+  <script>
+    function setTimer() {
+      // Change color of congrats button after clicking
+      document.getElementById("congrats_button").style.background = "#06adab";
+
+      // Set the date we're counting down to
+      var timeInSeconds = 6;
+      var currentTime = Date.parse(new Date());
+      var countDownDate = new Date(currentTime + timeInSeconds*1000);
+
+      // Update the count down every 1 second
+      var x = setInterval(function() {
+
+          // Get todays date and time
+          var now = new Date().getTime();
+          
+          // Find the distance between now an the count down date
+          var distance = countDownDate - now;
+          
+          // Time calculations for days, hours, minutes and seconds
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+          // Output the result in an element with id="congrats_page"
+          document.getElementById("congrats_page").innerHTML = "Countdown: " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+          
+          // If the count down is over, write some text 
+          if (distance < 0) {
+              clearInterval(x);
+              document.getElementById("congrats_page").innerHTML = "Generating winner...";
+              generateWinnerClick();
+          }
+      });
+    }
+
+    function submitForm(formId) {
+      document.getElementById(formId).submit();
+    }
+
+    function generateWinnerClick() {
+      if (document.getElementById("congrats_form")) {
+        setTimeout("submitForm('congrats_form')", 2000);
+      }
+    }
+  </script>
+
   <!-- Logo -->
   <h1 style = "text-align:center;">
   <div id="Title" style="margin-bottom:20px;">
@@ -51,11 +110,9 @@
   </div>
 
   <!-- Generate Winner -->
-  <div class="winner">
-    <form method='post' action='/generateWinner'>
-      <input type="submit" class="button" value="Generate Winner">
-    </form>
-  </div>
+  <form id="congrats_form" class="congrats" method='post' action='/generateWinner'>
+    <input type="button" id="congrats_button" class="button" value="Generate Winner" onclick="setTimer()">
+  </form>
 </body>
 
   <!-- (DEBUGGING) Twilio SMS -->
