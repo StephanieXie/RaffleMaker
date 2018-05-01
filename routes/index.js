@@ -3,7 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var twilio = require('twilio');
 
-var SmsModel = require('../models/smsModel'); // db model
+var config = require('../config');
+var Participant = require('../models/participant'); 
 var twilioClient = require('../twilioClient');
 
 // GET default home route
@@ -12,49 +13,47 @@ router.get('/', function(req, res) {
 });
 
 // POST to /twilio-callback whenever our twilio app receives a message
-router.post('/twilio-callback', function(req, res){
-  var incomingMsg = req.body.Body; // text
-  var incomingNum = req.body.From; // participant phone number
+router.post('/twilio-callback', function(req, res) {
+  var incomingNumber = req.body.From;
+  var incomingVerificationCode = req.body.Body;
 
-  // save to database
-  var msgToSave = {
-    status: incomingMsg,
-    from: incomingNum,
+  // verify and add participant to db
+  if (incomingVerificationCode === config.verificationCode) {
+    Participant.findOne({phoneNumber: incomingNumber})
+      .then(function(participant) {
+        if (!participant) {
+          Participant.create({phoneNumber: incomingNumber});
+          twilioClient.sendSms(incomingNumber, "Your phone number has been added to the raffle.");
+        }
+      });
+  } else {
+    console.log('Verification code incorrect. Please try again.');
+    twilioClient.sendSms(incomingNumber, "Verification code incorrect. Please try again.");
   }
-  var smsModel = new SmsModel(msgToSave)
+});
 
-  smsModel.save(function(err, data) {
-    // set up Twilio response
-    var MessagingResponse = twilio.twiml.MessagingResponse;
-    var twilioResp = new MessagingResponse();
+// POST to congratulations page
+router.post('/generateWinner', function(req, res) {
+  res.render('../public/congrats.html');
 
-    if (err) {
-      // (DEBUGGING) respond to user
-      twilioResp.message('Oops! We couldn\'t save status --> ' + incomingMsg);
-      // respond to twilio
-      res.set('Content-Type', 'text/xml');
-      res.send(twilioResp.toString());      
-    }
-    else {
-      // (DEBUGGING) respond to user
-      twilioResp.message('Successfully saved status! --> ' + incomingMsg);
-      // respond to twilio
-      res.set('Content-Type', 'text/xml');
-      res.send(twilioResp.toString());     
-    }
+  Participant.find().distinct('phoneNumber', function(err, phoneNumbers) {
+    var randomNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)];
+
+    // inform the winner that they won
+    twilioClient.sendSms(randomNumber, "Congratulations! Please come to the front to pick up your prize.");
+
+    console.log("Winner: " + randomNumber);
   });
 });
 
+/*
 // POST to /sendText whenever our twilio app sends a message
-router.post('/sendText', function(req, res, next) {
+router.post('/sendText', function(req, res) {
   var participantPhoneNumber = '+1'+req.body.phoneNumber;
   var message = "i want dominos"; // hard-coded for now
 
   // if a participant's phone number appears multiple times in db, find the most recent entry
-  SmsModel.findOne({from: participantPhoneNumber}, {}, {sort: {'_id': -1}})
-    .then(function(participant) {
-      twilioClient.sendSms(participantPhoneNumber, message);
-    })
+  twilioClient.sendSms(participantPhoneNumber, message)
     .then(function() {
       res.send("Texting: " + participantPhoneNumber);
     })
@@ -62,22 +61,6 @@ router.post('/sendText', function(req, res, next) {
       res.status(500).send(err.message);
     });
 });
-
-// POST to congratulations page
-router.post('/generateWinner', function(req, res, next) {
-  res.render('../public/congrats.html');
-
-  SmsModel.find().distinct('from', function(err, phoneNumbers) {
-    // 'phoneNumbers' is an array of all (unique) participant phone numbers stored in the database
-
-    var randomNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)];
-    var message = "CONGRATULATIONS!";
-
-    console.log("Winner: " + randomNumber);
-
-    // inform the winner that they won
-    twilioClient.sendSms(randomNumber, message);
-  });
-});
+*/
 
 module.exports = router;
