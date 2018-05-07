@@ -1,20 +1,12 @@
 # Raffle Maker
 
-### Verify your phone number with Twilio ###
-
-Follow the instructions [here](https://support.twilio.com/hc/en-us/articles/223180048-Adding-a-Verified-Outbound-Caller-ID-with-Twilio) to verify your phone number via the Twilio console.
-
----
-
 ### TO RUN
 
-1. In your browser, go to `raffle-maker.herokuapp.com`.
+1. Have participants text **CSC220** to RaffleMaker's phone number, **(619) 304-0737**.
 
-2. Click the 'Generate Winner' button. You should be redirected to the 'Congratulations' page, and the app should automatically text the winner "Congratulations!"
+2. In your browser, go to `raffle-maker.herokuapp.com`.
 
-3. Enter your number in the search bar and click 'Text Me'. You should receive the following text:  **"Sent from your Twilio trial account - i want dominos"**
-
-4. Text the Twilio number back. If the text goes through, you should get a response:  **"Sent from your Twilio trial account - Successfully saved status! --> your message"**
+3. Click the 'Generate Winner' button. Once the countdown reaches 0, you should be redirected to the 'Congratulations' page, and the app should automatically text a random participant "Congratulations! Please come to the front to pick up your prize."
 
 ---
 
@@ -94,7 +86,7 @@ NOTE:
   alias ngrok="/Users/<USER_NAME>/ngrok"
   ```
 
-7. Finally, install `nodemon` so you don't have to start your app every time you make a change.
+7. Finally, install `nodemon` so you don't have to restart your app every time you make a change.
 
   `npm install -g nodemon`
 
@@ -117,21 +109,3 @@ NOTE:
 
 5. Open the ngrok URL in your browser.
 
----
-
-### Resources
-
-**Twilio Tutorials**
-
-* [PROGRAMMABLE SMS QUICKSTART FOR NODE.JS](https://www.twilio.com/docs/sms/quickstart/node)
-* [SMS AND MMS NOTIFICATIONS WITH NODE.JS AND EXPRESS](https://www.twilio.com/docs/sms/tutorials/server-notifications-node-express)
-* [RECEIVE AND REPLY TO SMS AND MMS MESSAGES IN NODE.JS](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-node-js)
-* [SETTING UP A SERVER FOR TWILIO CLIENT WITH NGROK](https://www.twilio.com/docs/voice/client/tutorials/how-to-set-up-a-server-for-twilio-client#running-locally-using-ngrok)
-* [CREATE AN SMS CONVERSATION IN NODE.JS](https://www.twilio.com/docs/sms/tutorials/how-to-create-sms-conversations-node-js)
-* [Node.js / Express.js / MongoDb (+Mongoose) Boilerplate](https://github.com/sslover/node-express-twilio-sms)
-
-**Misc.**
-
-* [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
-* [StackEdit (Markdown renderer)](https://stackedit.io)
-* [Fixing npm On Mac OS X for Homebrew Users](https://gist.github.com/DanHerbert/9520689#gistcomment-1473994)
